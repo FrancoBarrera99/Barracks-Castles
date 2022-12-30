@@ -3,16 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/GameInstance.h"
-#include "GameInfoInstance.generated.h"
+#include "GameFramework/GameMode.h"
+#include "GameplayGM.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class BARRACKSANDCASTLES_API UGameInfoInstance : public UGameInstance
+class BARRACKSANDCASTLES_API AGameplayGM : public AGameMode
 {
 	GENERATED_BODY()
-
 	
 };
