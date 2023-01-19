@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystemInterface.h"
+#include "GAS_AbilitySystemComponent.h"
 #include "GameFramework/PlayerState.h"
 #include "GAS_PlayerState.generated.h"
 
@@ -13,7 +15,7 @@
  * It could be use both for AI Controlled or Player Controlled Characters
  */
 UCLASS()
-class BARRACKSANDCASTLES_API AGAS_PlayerState : public APlayerState
+class BARRACKSANDCASTLES_API AGAS_PlayerState : public APlayerState, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -22,22 +24,10 @@ public:
 	AGAS_PlayerState(const FObjectInitializer& ObjectInitializer);
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Abilities")
-	UAbilitySystemComponent* AbilitySystemComponent;
+	UGAS_AbilitySystemComponent* AbilitySystemComponent;
+
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	UPROPERTY()
 	class UGAS_CharacterAttributeSet* AttributeSet;
-
-	/** ASC getter */
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent()
-	{
-		return AbilitySystemComponent;
-	}
-
-	/** Called to grant a new Ability to the ASC (Server) */
-	UFUNCTION(BlueprintCallable, Category="Abilities")
-	void GrantAbility(TSubclassOf<UGameplayAbility> AbilityClass, int32 Level, int32 InputCode);
-
-	/** Called to use a registered Ability by tag */
-	UFUNCTION(BlueprintCallable, Category="Abilities")
-	void ActivateAbilitiesByTag(FGameplayTagContainer GameplayTagContainer);
 };

@@ -9,16 +9,13 @@ AGAS_Character::AGAS_Character()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	
 }
 
 // Called when the game starts or when spawned
 void AGAS_Character::BeginPlay()
 {
 	Super::BeginPlay();
-
-	InitializeDefaultAbilities();
-	
+	InitializeAbilities();
 }
 
 void AGAS_Character::PossessedBy(AController* NewController)
@@ -33,8 +30,6 @@ void AGAS_Character::PossessedBy(AController* NewController)
 	if(Cast<AGAS_PlayerState>(GetPlayerState()))
 	{
 		AbilitySystemComponent = Cast<AGAS_PlayerState>(GetPlayerState())->AbilitySystemComponent;
-
-		/* Set Owner and Avatar Actor for ASC */
 		AbilitySystemComponent->InitAbilityActorInfo(GetPlayerState(), this);
 	}
 }
@@ -46,8 +41,6 @@ void AGAS_Character::OnRep_PlayerState()
 	if(Cast<AGAS_PlayerState>(GetPlayerState()))
 	{
 		AbilitySystemComponent = Cast<AGAS_PlayerState>(GetPlayerState())->AbilitySystemComponent;
-
-		/* Set Owner and Avatar Actor for ASC */
 		AbilitySystemComponent->InitAbilityActorInfo(GetPlayerState(), this);
 	}
 }
@@ -59,29 +52,33 @@ void AGAS_Character::Tick(float DeltaTime)
 
 }
 
-// Called to bind functionality to input
-void AGAS_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+UAbilitySystemComponent* AGAS_Character::GetAbilitySystemComponent() const
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	return AbilitySystemComponent;
 }
 
-void AGAS_Character::InitializeDefaultAbilities()
+void AGAS_Character::InitializeAbilities()
 {
 	if(GetLocalRole() != ROLE_Authority)
 	{
 		return;
 	}
 
-	AGAS_PlayerState* CharacterPS = Cast<AGAS_PlayerState>(GetPlayerState());
-	
-	if(CharacterPS->IsValidLowLevel())
+	if(AGAS_PlayerState* GASPlayerState = Cast<AGAS_PlayerState>(GetPlayerState()))
 	{
-		const int size = DefaultAbilities.Num();
-		
-		for(int i = 0; i < size; i++)
+		if(UGAS_AbilitySystemComponent* BCAbilitySystemComponent = GASPlayerState->AbilitySystemComponent)
 		{
-			CharacterPS->GrantAbility(DefaultAbilities[i], 0, i);
+			for (TSubclassOf<UBCGameplayAbility>& Ability : DefaultAbilities)
+			{
+				FGameplayAbilitySpec AbilitySpec (
+				Ability,
+				1,
+				static_cast<int32>(Ability.GetDefaultObject()->AbilityInputID),
+				this
+				);
+				
+				BCAbilitySystemComponent->GiveAbility(AbilitySpec);
+			}
 		}
 	}
 	

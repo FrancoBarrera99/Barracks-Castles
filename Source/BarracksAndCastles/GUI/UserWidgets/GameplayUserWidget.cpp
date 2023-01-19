@@ -12,7 +12,7 @@ void UGameplayUserWidget::NativeOnInitialized()
 	
 	if(PlayerState)
 	{
-		AbilitySystemComponent = PlayerState->GetAbilitySystemComponent();
+		AbilitySystemComponent = PlayerState->AbilitySystemComponent;
 		if (AbilitySystemComponent)
 		{
 			AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UGAS_CharacterAttributeSet::GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);

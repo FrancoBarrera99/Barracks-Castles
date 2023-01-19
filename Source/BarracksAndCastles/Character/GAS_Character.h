@@ -3,39 +3,38 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystemComponent.h"
+#include "GAS_AbilitySystemComponent.h"
+#include "AbilitySystemInterface.h"
+#include "BarracksAndCastles/Abilities/BCGameplayAbility.h"
 #include "GameFramework/Character.h"
 #include "GAS_Character.generated.h"
 
 UCLASS()
-class BARRACKSANDCASTLES_API AGAS_Character : public ACharacter
+class BARRACKSANDCASTLES_API AGAS_Character : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
 	AGAS_Character();
-
+	
 protected:
-	// Called when the game starts or when spawned
+	//	Override
 	virtual void BeginPlay() override;
-
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
+	
+	//Gameplay Ability System
+	virtual void InitializeAbilities();
+	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Abilities")
-	UAbilitySystemComponent* AbilitySystemComponent;
+	UGAS_AbilitySystemComponent* AbilitySystemComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Abilities")
-	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
-	
-	virtual void PossessedBy(AController* NewController) override;
-
-	virtual void OnRep_PlayerState() override;
-
-	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
-
-	virtual void InitializeDefaultAbilities();
+	TArray<TSubclassOf<UBCGameplayAbility>> DefaultAbilities;
 
 public:	
-	// Called every frame
+	//	Override
 	virtual void Tick(float DeltaSeconds) override;
-	
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;	
 };
