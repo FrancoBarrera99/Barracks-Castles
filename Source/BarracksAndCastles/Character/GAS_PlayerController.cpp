@@ -14,7 +14,7 @@ void AGAS_PlayerController::BindASCInput()
 {
 	if(AbilitySystemComponent && !IsInputBound && InputComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s : Input Bound"), *FString(UEnum::GetValueAsString(GetWorld()->GetNetMode())));
+		//UE_LOG(LogTemp, Warning, TEXT("%s : Input Bound"), *FString(UEnum::GetValueAsString(GetWorld()->GetNetMode())));
 		AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent, FGameplayAbilityInputBinds(FString("ConfirmTarget"), FString("CancelTarget"), FString("EAbilityInputID"), static_cast<int32>(EAbilityInputID::Confirm), static_cast<int32>(EAbilityInputID::Cancel)));
 		IsInputBound = true;
 	}
