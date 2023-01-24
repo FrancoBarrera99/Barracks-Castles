@@ -29,5 +29,5 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	UPROPERTY()
-	class UGAS_CharacterAttributeSet* AttributeSet;
+	class UBCAttributeSet* AttributeSet;
 };

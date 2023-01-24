@@ -2,7 +2,7 @@
 
 
 #include "GAS_PlayerState.h"
-#include "BarracksAndCastles/Attributes/GAS_CharacterAttributeSet.h"
+#include "BarracksAndCastles/Attributes/BCAttributeSet.h"
 
 AGAS_PlayerState::AGAS_PlayerState(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
@@ -15,8 +15,8 @@ AGAS_PlayerState::AGAS_PlayerState(const FObjectInitializer& ObjectInitializer)
 		AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 	}
 	
-	/* Create CharacterAttributeSet */
-	AttributeSet = CreateDefaultSubobject<UGAS_CharacterAttributeSet>("AttributeSet");
+	/* Create AttributeSet */
+	AttributeSet = CreateDefaultSubobject<UBCAttributeSet>("AttributeSet");
 }
 
 UAbilitySystemComponent* AGAS_PlayerState::GetAbilitySystemComponent() const

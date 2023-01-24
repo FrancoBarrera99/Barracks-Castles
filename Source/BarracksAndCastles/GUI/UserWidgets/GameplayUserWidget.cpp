@@ -4,7 +4,7 @@
 #include "GameplayUserWidget.h"
 
 #include "Components/TextBlock.h"
-#include "BarracksAndCastles/Attributes/GAS_CharacterAttributeSet.h"
+#include "BarracksAndCastles/Attributes/BCAttributeSet.h"
 
 void UGameplayUserWidget::NativeOnInitialized()
 {
@@ -15,12 +15,12 @@ void UGameplayUserWidget::NativeOnInitialized()
 		AbilitySystemComponent = PlayerState->AbilitySystemComponent;
 		if (AbilitySystemComponent)
 		{
-			AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UGAS_CharacterAttributeSet::GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
-			AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UGAS_CharacterAttributeSet::GetManaAttribute()).AddUObject(this, &ThisClass::OnManaChanged);
-			AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UGAS_CharacterAttributeSet::GetPowerAttribute()).AddUObject(this, &ThisClass::OnPowerChanged);
-			AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UGAS_CharacterAttributeSet::GetAttackSpeedAttribute()).AddUObject(this, &ThisClass::OnAttackSpeedChanged);
-			AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UGAS_CharacterAttributeSet::GetRangeAttribute()).AddUObject(this, &ThisClass::OnRangeChanged);
-			AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UGAS_CharacterAttributeSet::GetGreedAttribute()).AddUObject(this, &ThisClass::OnGreedChanged);
+			AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UBCAttributeSet::GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
+			AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UBCAttributeSet::GetManaAttribute()).AddUObject(this, &ThisClass::OnManaChanged);
+			AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UBCAttributeSet::GetPowerAttribute()).AddUObject(this, &ThisClass::OnPowerChanged);
+			AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UBCAttributeSet::GetAttackSpeedAttribute()).AddUObject(this, &ThisClass::OnAttackSpeedChanged);
+			AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UBCAttributeSet::GetRangeAttribute()).AddUObject(this, &ThisClass::OnRangeChanged);
+			AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UBCAttributeSet::GetGreedAttribute()).AddUObject(this, &ThisClass::OnGreedChanged);
 		}
 	}
 	Super::NativeOnInitialized();
