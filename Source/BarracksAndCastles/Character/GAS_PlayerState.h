@@ -9,6 +9,7 @@
 #include "GameFramework/PlayerState.h"
 #include "GAS_PlayerState.generated.h"
 
+class UBCAttributeSet;
 
 /**
  * This player state is created to hold the ASC and the AttributeSet for a Character
@@ -29,5 +30,5 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	UPROPERTY()
-	class UBCAttributeSet* AttributeSet;
+	UBCAttributeSet* AttributeSet;
 };

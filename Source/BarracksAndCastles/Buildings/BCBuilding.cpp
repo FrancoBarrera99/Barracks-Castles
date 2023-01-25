@@ -2,12 +2,16 @@
 
 
 #include "BarracksAndCastles/Buildings/BCBuilding.h"
+#include "BarracksAndCastles/Attributes/BCAttributeSet.h"
+#include "BarracksAndCastles/Character/GAS_AbilitySystemComponent.h"
+#include "Components/BoxComponent.h"
 
 // Sets default values
 ABCBuilding::ABCBuilding()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
+	bReplicates = true;
 	
 	RootSceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootSceneComponent"));
 	BuildingStaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BuildingStaticMesh"));
@@ -22,6 +26,19 @@ ABCBuilding::ABCBuilding()
 	BoxComponent->SetRelativeLocation(FVector(0,0, 200));
 	
 	BuildingState = EBuildingState::Destroyed;
+
+	//Gameplay Ability System Setup
+	/* Create ASC */
+	AbilitySystemComponent = CreateDefaultSubobject<UGAS_AbilitySystemComponent>("AbilitySystemComponent");
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->SetIsReplicated(true);
+		AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+	}
+	
+	/* Create AttributeSet */
+	AttributeSet = CreateDefaultSubobject<UBCAttributeSet>("AttributeSet");
+	
 }
 
 // Called when the game starts or when spawned
@@ -40,9 +57,7 @@ void ABCBuilding::Tick(float DeltaTime)
 void ABCBuilding::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-
 	UpdateBuildingState(BuildingState);
-
 }
 
 void ABCBuilding::UpdateBuildingState(EBuildingState NewState)
@@ -53,5 +68,10 @@ void ABCBuilding::UpdateBuildingState(EBuildingState NewState)
 		UStaticMesh* Asset = StateMeshes[NewState];
 		BuildingStaticMesh->SetStaticMesh(Asset);
 	}
+}
+
+UAbilitySystemComponent* ABCBuilding::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
 }
 

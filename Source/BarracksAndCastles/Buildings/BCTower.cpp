@@ -2,6 +2,7 @@
 
 
 #include "BarracksAndCastles/Buildings/BCTower.h"
+#include "Components/BoxComponent.h"
 
 ABCTower::ABCTower()
 {
