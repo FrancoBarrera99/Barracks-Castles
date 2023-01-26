@@ -23,7 +23,7 @@ void AGAS_PlayerController::BindASCInput()
 void AGAS_PlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-	BindASCInput();
+	//BindASCInput();
 }
 
 void AGAS_PlayerController::OnRep_PlayerState()
@@ -35,7 +35,7 @@ void AGAS_PlayerController::OnRep_PlayerState()
 		AbilitySystemComponent = GetPlayerState<AGAS_PlayerState>()->AbilitySystemComponent;
 	}
 	
-	BindASCInput();
+	//BindASCInput();
 }
 
 void AGAS_PlayerController::InitPlayerState()

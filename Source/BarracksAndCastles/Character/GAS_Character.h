@@ -6,11 +6,11 @@
 #include "GAS_AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "BarracksAndCastles/Abilities/BCGameplayAbility.h"
-#include "GameFramework/Character.h"
+#include "BarracksAndCastles/TP_ThirdPerson/TP_ThirdPersonCharacter.h"
 #include "GAS_Character.generated.h"
 
 UCLASS()
-class BARRACKSANDCASTLES_API AGAS_Character : public ACharacter, public IAbilitySystemInterface
+class BARRACKSANDCASTLES_API AGAS_Character : public ATP_ThirdPersonCharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
