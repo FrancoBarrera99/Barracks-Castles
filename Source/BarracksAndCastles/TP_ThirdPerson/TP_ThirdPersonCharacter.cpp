@@ -8,8 +8,13 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
+#include "NativeGameplayTags.h"
 #include "EnhancedInputSubsystems.h"
+#include "BarracksAndCastles/Input/BCEnhancedInputComponent.h"
 
+UE_DEFINE_GAMEPLAY_TAG(InputTag_Move, "InputTag.Move");
+UE_DEFINE_GAMEPLAY_TAG(InputTag_Look, "InputTag.Look");
+UE_DEFINE_GAMEPLAY_TAG(InputTag_Jump, "InputTag.Jump");
 
 //////////////////////////////////////////////////////////////////////////
 // ATP_ThirdPersonCharacter
@@ -69,21 +74,15 @@ void ATP_ThirdPersonCharacter::BeginPlay()
 //////////////////////////////////////////////////////////////////////////
 // Input
 
-void ATP_ThirdPersonCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
+void ATP_ThirdPersonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	// Set up action bindings
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
+	if (UBCEnhancedInputComponent* BCEnhancedInputComponent = CastChecked<UBCEnhancedInputComponent>(PlayerInputComponent)) {
 		
-		//Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-
-		//Moving
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATP_ThirdPersonCharacter::Move);
-
-		//Looking
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATP_ThirdPersonCharacter::Look);
-
+		//Bind input actions to input tags
+		BCEnhancedInputComponent->BindActionByTag(InputConfig, InputTag_Jump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+		BCEnhancedInputComponent->BindActionByTag(InputConfig, InputTag_Move, ETriggerEvent::Triggered, this, &ATP_ThirdPersonCharacter::Move);
+		BCEnhancedInputComponent->BindActionByTag(InputConfig, InputTag_Look, ETriggerEvent::Triggered, this, &ATP_ThirdPersonCharacter::Look);
 	}
 
 }

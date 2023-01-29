@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GAS_AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
-#include "BarracksAndCastles/Abilities/BCGameplayAbility.h"
 #include "BarracksAndCastles/TP_ThirdPerson/TP_ThirdPersonCharacter.h"
 #include "GAS_Character.generated.h"
+
+class UGameplayAbility;
+class UGAS_AbilitySystemComponent;
 
 UCLASS()
 class BARRACKSANDCASTLES_API AGAS_Character : public ATP_ThirdPersonCharacter, public IAbilitySystemInterface
@@ -31,7 +32,7 @@ protected:
 	UGAS_AbilitySystemComponent* AbilitySystemComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Abilities")
-	TArray<TSubclassOf<UBCGameplayAbility>> DefaultAbilities;
+	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
 
 public:	
 	//	Override

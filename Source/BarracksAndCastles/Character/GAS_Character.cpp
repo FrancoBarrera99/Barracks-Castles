@@ -68,16 +68,18 @@ void AGAS_Character::InitializeAbilities()
 	{
 		if(UGAS_AbilitySystemComponent* BCAbilitySystemComponent = GASPlayerState->AbilitySystemComponent)
 		{
-			for (TSubclassOf<UBCGameplayAbility>& Ability : DefaultAbilities)
+			int32 AbilityIndex = 0;
+			for (TSubclassOf<UGameplayAbility>& Ability : DefaultAbilities)
 			{
 				FGameplayAbilitySpec AbilitySpec (
 				Ability,
 				1,
-				static_cast<int32>(Ability.GetDefaultObject()->AbilityInputID),
+				AbilityIndex,
 				this
 				);
 				
 				BCAbilitySystemComponent->GiveAbility(AbilitySpec);
+				AbilityIndex++;
 			}
 		}
 	}
