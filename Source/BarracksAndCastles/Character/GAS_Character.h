@@ -100,7 +100,6 @@ protected:
 
 public:	
 	
-	virtual void Tick(float DeltaSeconds) override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	/** Returns CameraBoom subobject **/

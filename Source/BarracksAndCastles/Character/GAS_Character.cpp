@@ -135,13 +135,22 @@ void AGAS_Character::SendLocalInputToAbilitySystemComponent(bool bIsPressed, int
 {
 	if(AbilitySystemComponent)
 	{
-		bIsPressed ? AbilitySystemComponent->AbilityLocalInputPressed(InputID) : AbilitySystemComponent->AbilityLocalInputReleased(InputID);
+		bIsPressed ? AbilitySystemComponent->PressInputID(InputID) : AbilitySystemComponent->ReleaseInputID(InputID);
 	}
 }
 
 void AGAS_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	//Add Input Mapping Context
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+		}
+	}
 
 	// Set up action bindings
 	if (UBCEnhancedInputComponent* BCEnhancedInputComponent = CastChecked<UBCEnhancedInputComponent>(PlayerInputComponent))
@@ -161,49 +170,30 @@ void AGAS_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 void AGAS_Character::BeginPlay()
 {
 	Super::BeginPlay();
-	InitializeAbilities();
-
-	//Add Input Mapping Context
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
-		}
-	}
 }
 
 void AGAS_Character::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	if (!GetPlayerState() || GetLocalRole() != ROLE_Authority)
+	if (AGAS_PlayerState* PS = GetPlayerState<AGAS_PlayerState>())
 	{
-		return;
+		AbilitySystemComponent = Cast<UGAS_AbilitySystemComponent>(PS->GetAbilitySystemComponent());
+		PS->GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
 	}
 
-	if (Cast<AGAS_PlayerState>(GetPlayerState()))
-	{
-		AbilitySystemComponent = Cast<AGAS_PlayerState>(GetPlayerState())->AbilitySystemComponent;
-		AbilitySystemComponent->InitAbilityActorInfo(GetPlayerState(), this);
-	}
+	InitializeAbilities();
 }
 
 void AGAS_Character::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 
-	if (Cast<AGAS_PlayerState>(GetPlayerState()))
+	if (AGAS_PlayerState* PS = GetPlayerState<AGAS_PlayerState>())
 	{
-		AbilitySystemComponent = Cast<AGAS_PlayerState>(GetPlayerState())->AbilitySystemComponent;
-		AbilitySystemComponent->InitAbilityActorInfo(GetPlayerState(), this);
+		AbilitySystemComponent = Cast<UGAS_AbilitySystemComponent>(PS->GetAbilitySystemComponent());
+		PS->GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
 	}
-}
-
-// Called every frame
-void AGAS_Character::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 UAbilitySystemComponent* AGAS_Character::GetAbilitySystemComponent() const

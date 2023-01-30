@@ -4,8 +4,7 @@
 #include "GAS_PlayerState.h"
 #include "BarracksAndCastles/Attributes/BCAttributeSet.h"
 
-AGAS_PlayerState::AGAS_PlayerState(const FObjectInitializer& ObjectInitializer)
-: Super(ObjectInitializer)
+AGAS_PlayerState::AGAS_PlayerState()
 {
 	/* Create ASC */
 	AbilitySystemComponent = CreateDefaultSubobject<UGAS_AbilitySystemComponent>("AbilitySystemComponent");
@@ -17,6 +16,9 @@ AGAS_PlayerState::AGAS_PlayerState(const FObjectInitializer& ObjectInitializer)
 	
 	/* Create AttributeSet */
 	AttributeSet = CreateDefaultSubobject<UBCAttributeSet>("AttributeSet");
+
+	/*Set PlayerState's NetUpdateFrequency same as Character's to prevent lag in the Ability System */
+	NetUpdateFrequency = 100.0f;
 }
 
 UAbilitySystemComponent* AGAS_PlayerState::GetAbilitySystemComponent() const

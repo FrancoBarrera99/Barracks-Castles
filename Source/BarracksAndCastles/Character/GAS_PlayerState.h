@@ -22,7 +22,7 @@ class BARRACKSANDCASTLES_API AGAS_PlayerState : public APlayerState, public IAbi
 
 public:
 
-	AGAS_PlayerState(const FObjectInitializer& ObjectInitializer);
+	AGAS_PlayerState();
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Abilities")
 	UGAS_AbilitySystemComponent* AbilitySystemComponent;
